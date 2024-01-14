@@ -24,14 +24,17 @@ const getContactById = async (contactId) => {
 const removeContact = async (contactId) => {
   try {
     const contacts = await listContacts();
-    const index = contacts.findIndex((item) => item.id === contactId);
-    if (index === -1) {
+    const removedContactIndex = contacts.findIndex(
+      (item) => item.id === contactId
+    );
+
+    if (removedContactIndex === -1) {
       return null;
     }
-    const results = contacts.splice(index, 1);
-
+    const [removedContact] = contacts.splice(removedContactIndex, 1);
     await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
-    return results.result;
+
+    return removedContact;
   } catch (error) {}
   // ...твій код. Повертає об'єкт видаленого контакту. Повертає null, якщо контакт з таким id не знайдений.
 };
